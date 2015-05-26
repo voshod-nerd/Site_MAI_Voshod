@@ -152,7 +152,7 @@ AppAsset::register($this);
 <div class="row">
             
             <div class="col-md-12">
-       <?= Html::img('images/newhead.gif', ['alt'=>'some', 'class'=>'img-rounded']);?> </div>           
+       <?= Html::img('images/newhead.jpg', ['alt'=>'some', 'class'=>'img-rounded']);?> </div>           
 </div>
 
 

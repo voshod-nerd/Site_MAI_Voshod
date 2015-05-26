@@ -41,8 +41,28 @@ $db->createCommand()->insert('raspisanie', [
 
 public function RertieveData() 
 		{
-		 $datarow = Raspisanie::find();
-         return $datarow;
+		
+		
+$sqltext ='SELECT id,date,(SELECT name FROM lesson_type WHERE id=id_type_study) as s1,
+(SELECT type FROM lesson_type WHERE id=id_type_study) as s2,
+(SELECT (select stydytype from studytype where id=id_type_study) AS sec FROM lesson_type WHERE id=id_type_study) as s3,
+ (SELECT name FROM subject s WHERE id=id_subject) as s4,
+ (SELECT surname FROM professors  WHERE id=id_professor) as s5,
+ (SELECT name_color FROM colors  WHERE id=colorid) as s6,
+  (SELECT name FROM `group`  WHERE id=idgroup) as s7,cabinet_number 
+  FROM raspisanie'; 		
+
+$db = new Connection([
+    'dsn' => 'mysql:host=localhost;dbname=yii2',
+    'username' => 'yii2',
+    'password' => '19800123',
+    'charset' => 'utf8',
+]);
+
+		return $data =$db->createCommand($sqltext)->queryAll();  
+		
+		
+		
 		}
 
 }

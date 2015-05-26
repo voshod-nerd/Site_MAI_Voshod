@@ -101,30 +101,7 @@ class SiteController extends Controller
         return $this->render('about');
     }
 	
- /////////////////////////////////////////   
-	public function actionAddcontent() 
-{
 
-
- $model = new Posts();
-       $this->layout='//adminka';
-       
-        if ($model->load(Yii::$app->request->post())) 
-        {
-        $form = Yii::$app->request->post('Posts');
-       
-        //$model->saved($form['text']);
-        $model->Save();
-        }
-
-               $query = Posts::find();
-              
-              
-               $listpost = $query->orderBy('dateadd')->all();
-              
-               return  $this->render('addcontent',['model'=>$model,'listpost' => $listpost]);
-		
-	}
 /////////////////////////////////////////////
 
 public function actionAdd()
@@ -209,15 +186,68 @@ return $this->render('showlibrary', ['model' => $model,'data'=>$data]);
     }
 
 
+ //   Добавление материалов сайта
+    public function actionAddcontent() 
+{
+
+
+ $model = new Posts();
+       $this->layout='//adminka';
+       
+        if ($model->load(Yii::$app->request->post())) 
+        {
+        $form = Yii::$app->request->post('Posts');
+       
+        //$model->saved($form['text']);
+        $model->Save();
+        }
+
+               $query = Posts::find();
+              
+              
+               $listpost = $query->orderBy('dateadd')->all();
+              
+               return  $this->render('addcontent',['model'=>$model,'listpost' => $listpost]);
+        
+    }
+
+
 // Добавление редактирование расписания 
 
 public function actionAddraspisanie()
 {
 
- $model = new Raspisanie();   
- $this->layout='//adminka';
+ //$model = new Raspisanie();   
+ //$this->layout='//adminka';
 
- return $this->render('addraspisanie',['model'=>$model]);
+ //return $this->render('addraspisanie',['model'=>$model]);
+
+
+ $model = new Raspisanie();
+       $this->layout='//adminka';
+       
+        if ($model->load(Yii::$app->request->post())) 
+        {
+        $form = Yii::$app->request->post('Raspisanie');
+                //$model->Save($form);
+         
+        $model->date=$form['date'];
+        $model->id_lesson_type=$form['id_lesson_type'];
+        $model->id_subject=$form['id_subject'];
+        $model->id_professor=$form['id_professor'];
+        $model->id_subject=$form['id_subject']; 
+             $model->colorid=$form['colorid']; 
+             $model->idgroup=$form['idgroup']; 
+        $model->Save();
+            
+        }
+
+               $query = Raspisanie::find();
+
+               $dataRasp = $query->orderBy('id')->all();
+             return  $this->render('addraspisanie',['model'=>$model,'dataRasp' => $dataRasp]);
+
+
 
 
 
