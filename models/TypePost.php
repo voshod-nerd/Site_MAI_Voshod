@@ -6,12 +6,27 @@ use yii\base\Model;
 use yii\db\Connection;
 use yii\db\ActiveRecord;
 
-class Type_Post extends ActiveRecord
+class TypePost extends ActiveRecord
 {
 
 
 public $name_type;
 
+public static function tableName()
+    {
+        return 'typepost';
+    }
+
+public function rules()
+    {
+
+        return 
+        [
+        ['id', 'unique'],
+        [['id', 'name_type'], 'required'],
+        ];
+
+    }
 
 
 
@@ -46,7 +61,7 @@ $db = new Connection([
     'charset' => 'utf8',
 ]);
 
-return $data =$db->createCommand('select * from type_post')->queryAll();
+return $data =$db->createCommand('select * from typepost')->queryAll();
 }		
 		
 		

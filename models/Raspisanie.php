@@ -39,9 +39,8 @@ $db->createCommand()->insert('raspisanie', [
 
 }
 
-public function RertieveData() 
+public function GetData() 
 		{
-		
 		
 $sqltext ='SELECT id,date,(SELECT name FROM lesson_type WHERE id=id_type_study) as s1,
 (SELECT type FROM lesson_type WHERE id=id_type_study) as s2,
@@ -58,12 +57,8 @@ $db = new Connection([
     'password' => '19800123',
     'charset' => 'utf8',
 ]);
-
-		return $data =$db->createCommand($sqltext)->queryAll();  
-		
-		
-		
-		}
+return $data =$db->createCommand($sqltext)->queryAll();  
+}
 
 }
 

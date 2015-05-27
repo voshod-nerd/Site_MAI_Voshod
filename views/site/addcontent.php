@@ -5,7 +5,7 @@ use yii\helpers\Html;
 use dosamigos\ckeditor\CKEditor; 
 use yii\widgets\ActiveForm;
 use dosamigos\ckeditor\CKEditorInline; 
-use app\models\Type_Post;
+use app\models\TypePost;
 ?>
 
 
@@ -27,7 +27,7 @@ use app\models\Type_Post;
 
 <?php 
 // получение списка разделов
-$md = new Type_Post();
+$md = new TypePost();
 $data = $md->GetData();
 
 //var_dump($data);

@@ -10,6 +10,11 @@ use app\models\Posts;
 use yii\web\UploadedFile;
 use app\models\UploadForm;
 use app\models\Raspisanie;
+use app\controllers\DateTime;
+use yii\helpers;
+
+
+
 class SiteController extends Controller
 {
     public function behaviors()
@@ -158,15 +163,26 @@ return $this->render('showlibrary', ['model' => $model,'data'=>$data]);
  //   Добавление материалов сайта
     public function actionAddcontent() 
 {
- $model = new Posts();
-       $this->layout='//adminka';
+        $model = new Posts();
+        $this->layout='//adminka';
        
         if ($model->load(Yii::$app->request->post())) 
         {
+        $model = new Posts();
         $form = Yii::$app->request->post('Posts');
-       
-        //$model->saved($form['text']);
-        $model->Save();
+        $model->title=$form['title'];
+        $model->content=$form['content'];
+        /// получение текущей даты
+        $date = new \DateTime();
+        $model->dateadd=$date;
+
+      
+        $model->type_post=$form['type_post'];
+        // сохранение которое не работает
+        $model->save();
+        // Изза того что Save не работает пишу это 
+        $model->SaveData($form['title'],$form['content'],$form['type_post'],$date->format('Y-m-d'));
+//$newDate->format('d/m/Y');
         }
                $query = Posts::find();
               
@@ -182,24 +198,34 @@ public function actionAddraspisanie()
  //$model = new Raspisanie();   
  //$this->layout='//adminka';
  //return $this->render('addraspisanie',['model'=>$model]);
- $model = new Raspisanie();
-       $this->layout='//adminka';
+        $model = new Raspisanie();
+        $this->layout='//adminka';
        
         if ($model->load(Yii::$app->request->post())) 
         {
         $form = Yii::$app->request->post('Raspisanie');
-                //$model->Save($form);
-         
         $model->date=$form['date'];
         $model->id_lesson_type=$form['id_lesson_type'];
         $model->id_subject=$form['id_subject'];
         $model->id_professor=$form['id_professor'];
         $model->id_subject=$form['id_subject']; 
-             $model->colorid=$form['colorid']; 
-             $model->idgroup=$form['idgroup']; 
-        $model->Save();
-            
+        $model->colorid=$form['colorid']; 
+        $model->idgroup=$form['idgroup']; 
+        $model->Save();    
         }
+        else   
+                    {
+                           $id = Yii::$app->request->get('id');
+                           //var_dump($id);
+                           //die();
+                           if ($id>0)  
+                           {
+                            // удаление записи 
+                            $deleteitem = Raspisanie::find()->where(['id' => $id])->one();
+                            $deleteitem->delete(); // удаляем строку из таблицы
+                           } 
+
+                    }
                $query = Raspisanie::find();
                $dataRasp = $query->orderBy('id')->all();
              return  $this->render('addraspisanie',['model'=>$model,'dataRasp' => $dataRasp]);

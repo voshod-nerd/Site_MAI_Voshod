@@ -8,20 +8,38 @@ use yii\base\Model;
 use yii\db\Connection;
 use yii\db\ActiveRecord;
 
+
 class Posts extends ActiveRecord
 {
 
-public $content="Adds";
 public $title;
+public $content;
 public $dateadd;
 public $type_post;
 
 
 
+public static function tableName()
+    {
+        return 'posts';
+    }
 
-public function saved($html) 
+
+
+public function rules()
+    {
+
+    	return 
+    	[
+    	['id', 'unique'],
+    	[['id', 'title', 'content', 'dateadd','type_post'], 'required'],
+    	];
+
+	}
+
+public function SaveData($title,$content,$type_post,$dateadd) 
 {
-//echo $html;
+
 
 $db = new Connection([
     'dsn' => 'mysql:host=localhost;dbname=yii2',
@@ -31,13 +49,15 @@ $db = new Connection([
 ]);
 
 $db->createCommand()->insert('posts', [
-    'title' => 'first_title',
-    'content' => $html,
-	'type_post'=>'Cтудентам',
-    'dateadd'=>date("m.d.y")
+    'title' => $title,
+    'content' => $content,
+    'dateadd'=>$dateadd,
+    'type_post'=>$type_post
 ])->execute();
 
+
 }
+
 
 }
 

@@ -1,15 +1,16 @@
 <?php
 use yii\widgets\ActiveForm;
-use yii\heplers\Html;
+use yii\helpers\Html; 
 use yii\helpers\Url;
 use app\models\WorkWithSubject;
 use app\models\WorkWithTypeLesson;
 use app\models\Professors;
 use app\models\Colors;
 use app\models\Group;
-use yii\jui\DatePicker; 
-
-
+use yii\jui\DatePicker;
+use yii\grid\GridView; 
+use app\models\Raspisanie;
+use yii\data\ActiveDataProvider;
 
 // получение списка предметов
 $md = new WorkWithSubject();
@@ -70,8 +71,44 @@ endforeach;
 
 <h4>Расписание для #дд.мм.гг</h4>
 
+<?php
+
+$rows=$model->GetData();
+
+// отображение таблицы
+echo "<table class='table table-bordered'>";
+echo "<tr><th>Пара</th><th>Тип занятия</th><th>Форма обучения</th><th>Предмет</th><th>Преподователь</th><th>Кабинет</th><th>Действие</th></tr>";
+foreach ($rows as &$element):
+echo "<tr>";
+// ссылка для удаления
+//$link=Url::to(['site/addraspisanie?id='.$element[id].'']);
+//$link = Html::a('action', ['site/addraspisanie', 'id' => $element[id]]);
+$url = Url::to(['site/addraspisanie', 'id' => $element[id]]);
+echo "<td>".$element[s1]."</td>"."<td>".$element[s2]."</td>"."<td>".$element[s3]."</td>"
+."<td>".$element[s4]."</td>"."<td>".$element[s5]."</td>"."<td>".$element[cabinet_number]."</td>"
+."<td><a href='".$url."'>Удалить</a></td>";
+
+echo "</tr>";
+endforeach;
+echo "<table>";
+
+//$query = Raspisanie::find(); Raspisanie::find()
+//$listpost = $query->orderBy('id')->all();
+///$dataProvider = new ActiveDataProvider([
+//    'query' => $rows,
+//    'pagination' => [
+//        'pageSize' => 20,
+//    ],
+//]);
 
 
+
+//echo  GridView::widget([
+//    'dataProvider' => $dataProvider,    
+//    ]);
+
+
+?>
 
 
 

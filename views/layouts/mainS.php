@@ -5,6 +5,8 @@ use yii\bootstrap\NavBar;
 use yii\widgets\Breadcrumbs;
 use app\assets\AppAsset;
 use yii\helpers\Url;
+use app\models\TypePost;
+use app\models\Posts;
 /* @var $this \yii\web\View */
 /* @var $content string */
 
@@ -27,119 +29,46 @@ AppAsset::register($this);
     <a href="#" class="link">link</a>
     <nav id="nav">
         <ul>
-    <li><a href="">Абитуриентам</a>
-        <div class="slide-holder">
-            <div class="slide-frame">
-                  <ul>
-                      <li><a href="<?php echo Url::to(['site/add']);?>">График вступительных экзаменов</a></li>
-                      <li><a href="">Информация для обладателей образовательных грандов Республики Казахстан</a></li>
-                      <li><a href="">Квота приема лиц, имеющих особые права при поступлении</a></li>
-                      <li><a href="">План приема на бюджетные места</a></li>
-                      <li><a href="">План приема на платные места</a></li>
+   
+<?php
+ //<li>
+// Получение всех разделов
+// get all the razdeli 
+$razdeli =TypePost::find()->asArray()->all();
+// show the results
 
 
-                  </ul>
-                  <ul>
-                     <li><a href="">Дополнительное образование</a></li>
-                      <li><a href="">Особые права поступающих в МАИ в 2015 году</a></li>
-                      <li><a href="">Направления подготовки (специальности)</a></li>
-                      <li><a href="">Перечень вступительных испытаний на направления подготовки и специальности филиала «Восход» МАИ</a></li>
-                     
-                  </ul>
-                  <ul>
-                     <li><a href="">Документы, предоставляемые в приемную комиссию</a></li>
-                      <li><a href="">Нижняя граница ЕГЭ</a></li>
-                      <li><a href="">Результаты вступительных экзаменов</a></li>
-                  </ul>
-            </div>
-        </div>
-    </li>
-    <li><a href="">Студентам</a>
-        <div class="slide-holder">
-            <div class="slide-frame">
-                  <ul>
-                      <li><a href="">Успеваемость</a></li>
-                      <li><a href="">Расписание дневного отделения</a></li>
-                      <li><a href="">Расписание вечернего отделения</a></li>
-                      <li><a href="">Электронные ресурсы</a></li>
-                      <li><a href="">Факультеты</a></li>
-                      
-                  </ul>
-                  <ul>
-                      <li><a href="/5139e522d28558944599453f91de05a8">Творческие коллективы (КВН, музыкальные группы)</a></li>
-                      <li><a href="/elektronnye_resursy">Профсоюз студентов </a></li>
-                      
-                  </ul>
-                 
-                  
-                
-            </div>
-        </div>
-    </li>
-    <li><a href="">Сотрудникам </a>
-        <div class="slide-holder">
-            <div class="slide-frame">
-                  <ul>
-                      <li><a href="">Администрация филиала</a></li>
-                      <li><a href="">Ученый совет</a></li>
-                      <li><a href="">Телефонный справочник</a></li>
-                      <li><a href="">Реквизиты</a></li>
-                      <li><a href="">Материальная база</a></li>
-                      <li><a href="">Встречи выпускников</a></li>
-                      <li><a href="">Конкурсы и вакансии</a></li>
-                      <li><a href="">История</a></li>
-                  </ul>
-                 
-            </div>
-        </div>
-    </li>
-    <li><a href="">Новости</a>
-        <div class="slide-holder">
-            <div class="slide-frame">
-                  <ul>
-                      <li><a href="/heads">Новости Филиала</a></li>
-                     
-                  </ul>
-                  
-            </div>
-        </div>
-    </li>
-    <li><a href="">Обьявления</a>
-        <div class="slide-holder">
-            <div class="slide-frame">
-                  <ul>
-                      <li><a href="/nsudetails">Текущие обьявления</a></li>
-                     
-                  </ul>
-                 
-                 
-            </div>
-        </div>
-    </li>
-    <li><a href="">Контакты</a>
-        <div class="slide-holder">
-            <div class="slide-frame">
-                  <ul>
-                      <li><a href="/press">Контакты дирекции</a></li>
-                      <li><a href="/news">Контакты приемной комиссии</a></li>
-                     
-                  </ul>
-                
-            </div>
-        </div>
-    </li>
-    <li><a href="">Войти</a>
-        <div class="slide-holder">
-            <div class="slide-frame">
-                  <ul>
-                      <li><a href="/press">Войти</a></li>
-                      <li><a href="/news">Зарегестрироваться</a></li>
-                     
-                  </ul>
-                
-            </div>
-        </div>
-    </li>
+foreach($razdeli as $element) 
+{
+echo "<li>"; 
+
+$tx = $element['name_type'];
+//var_dump($tx);
+//die();
+
+echo "<a href=''>".$tx."</a>";
+echo "<div class='slide-holder'>";
+echo "<div class='slide-frame'>";
+// распеечатка подразделов данного раздела
+$podrazdeli=Posts::find()->where(['type_post'=>$element['id']])->asArray()->all();
+foreach ($podrazdeli as $el) 
+{
+echo "<ul>";
+$link=Url::to(['site/showpost', 'id' => $el['id']]);
+$text=$el['title'];
+echo "<li><a href=".$link.">".$text."</a></li>"; 
+echo "</ul>"; 
+}
+echo "</div>";
+echo "</div>";
+echo "</li>";
+
+
+
+}
+?>
+
+    
 </ul>
 
    
