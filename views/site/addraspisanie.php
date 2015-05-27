@@ -68,6 +68,8 @@ endforeach;
 <button>Добавить</button>
 <?php ActiveForm::end(); ?>
 
+<h4>Расписание для #дд.мм.гг</h4>
+
 
 
 

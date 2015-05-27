@@ -1,7 +1,5 @@
 <?php
-
 namespace app\controllers;
-
 use Yii;
 use yii\filters\AccessControl;
 use yii\web\Controller;
@@ -12,7 +10,6 @@ use app\models\Posts;
 use yii\web\UploadedFile;
 use app\models\UploadForm;
 use app\models\Raspisanie;
-
 class SiteController extends Controller
 {
     public function behaviors()
@@ -37,7 +34,6 @@ class SiteController extends Controller
             ],
         ];
     }
-
     public function actions()
     {
         return [
@@ -50,21 +46,16 @@ class SiteController extends Controller
             ],
         ];
     }
-
     public function actionIndex()
     {
-
         $this->layout='//mainS';
         return $this->render('index');
-
     }
-
     public function actionLogin()
     {
         if (!\Yii::$app->user->isGuest) {
             return $this->goHome();
         }
-
         $model = new LoginForm();
         if ($model->load(Yii::$app->request->post()) && $model->login()) {
             return $this->goBack();
@@ -74,20 +65,16 @@ class SiteController extends Controller
             ]);
         }
     }
-
     public function actionLogout()
     {
         Yii::$app->user->logout();
-
         return $this->goHome();
     }
-
     public function actionContact()
     {
         $model = new ContactForm();
         if ($model->load(Yii::$app->request->post()) && $model->contact(Yii::$app->params['adminEmail'])) {
             Yii::$app->session->setFlash('contactFormSubmitted');
-
             return $this->refresh();
         } else {
             return $this->render('contact', [
@@ -95,15 +82,12 @@ class SiteController extends Controller
             ]);
         }
     }
-
     public function actionAbout()
     {
         return $this->render('about');
     }
 	
-
 /////////////////////////////////////////////
-
 public function actionAdd()
     { 
         $model = new Posts();
@@ -115,7 +99,6 @@ public function actionAdd()
        
         $model->saved($form['text']);
         }
-
                $query = Posts::find();
               
               
@@ -123,19 +106,15 @@ public function actionAdd()
               
                return  $this->render('add',['model'=>$model,'listpost' => $listpost]);
          
-
     }
 //////////////////////////////////////////
-
 ////////////// Показ расписания
 public function actionShedule() 
 {
 $this->layout='//mainS';
 return $this->render('showshedule');
-
 }
 /////////////
-
 /////// Показ библиотеки///////////////////////////////////////
 public function actionShowlibrary() 
 {
@@ -145,34 +124,27 @@ public function actionShowlibrary()
 return $this->render('showlibrary', ['model' => $model,'data'=>$data]);
 }
 ////////////////////////////////////////////////////////////////
-
 /// Части посвященные Админки
  public function actionUpload()
     {
         $model = new UploadForm();
          $this->layout='//adminka';
-
         if (Yii::$app->request->isPost) {
             $model->file = UploadedFile::getInstances($model, 'file');
             
             if ($model->file && $model->validate()) {
-
               
-
                 foreach ($model->file as $file) {
                         
                         $randValue=mt_rand(); 
-
                         $form = Yii::$app->request->post('UploadForm');
                         $filename=$randValue.'.'. $file->extension;
                        // $pathfile='uploads/' . $file->baseName . '.' . $file->extension;
                          $pathfile='uploads/' .$randValue. '.' . $file->extension;
                         $model->onlysave($form['subject'],$form['destription'],$filename,$pathfile);
-
                     $file->saveAs('uploads/' .$randValue.'.'. $file->extension);
                 }
             }
-
             $data=$model->GetData();         
             return $this->render('upload', ['model' => $model,'data'=>$data,'iSsuccess'=>true]); 
         } 
@@ -182,15 +154,10 @@ return $this->render('showlibrary', ['model' => $model,'data'=>$data]);
             $data=$model->GetData();         
             return $this->render('upload', ['model' => $model,'data'=>$data]); 
             }
-
     }
-
-
  //   Добавление материалов сайта
     public function actionAddcontent() 
 {
-
-
  $model = new Posts();
        $this->layout='//adminka';
        
@@ -201,7 +168,6 @@ return $this->render('showlibrary', ['model' => $model,'data'=>$data]);
         //$model->saved($form['text']);
         $model->Save();
         }
-
                $query = Posts::find();
               
               
@@ -210,47 +176,39 @@ return $this->render('showlibrary', ['model' => $model,'data'=>$data]);
                return  $this->render('addcontent',['model'=>$model,'listpost' => $listpost]);
         
     }
-
-
 // Добавление редактирование расписания 
-
 public function actionAddraspisanie()
 {
-
  //$model = new Raspisanie();   
  //$this->layout='//adminka';
-
  //return $this->render('addraspisanie',['model'=>$model]);
-
-
  $model = new Raspisanie();
        $this->layout='//adminka';
        
         if ($model->load(Yii::$app->request->post())) 
         {
         $form = Yii::$app->request->post('Raspisanie');
-                $model->Post();
+                //$model->Save($form);
+         
+        $model->date=$form['date'];
+        $model->id_lesson_type=$form['id_lesson_type'];
+        $model->id_subject=$form['id_subject'];
+        $model->id_professor=$form['id_professor'];
+        $model->id_subject=$form['id_subject']; 
+             $model->colorid=$form['colorid']; 
+             $model->idgroup=$form['idgroup']; 
+        $model->Save();
+            
         }
-
                $query = Raspisanie::find();
-
                $dataRasp = $query->orderBy('id')->all();
              return  $this->render('addraspisanie',['model'=>$model,'dataRasp' => $dataRasp]);
-
-
-
-
-
 }
-
 // вывод главного страницы админки
 public function actionAdmin() 
 {
 $this->layout='//adminka';
 return $this->render('admin');
-
 }
-
-
 	
 }
