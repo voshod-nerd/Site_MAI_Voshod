@@ -1,4 +1,43 @@
+<?php
+use yii\helpers\Html;
+use yii\helpers\Url;
+use yii\widgets\ActiveForm;
+use app\models\Group;
+use yii\helpers\ArrayHelper;
+use app\models\Studytype;
 
+
+
+$groups=Group::find()->asArray()->all();
+$typeStudy=Studytype::find()->asArray()->all();
+
+///
+foreach ($groups as &$element): 
+$itemsGr[$element[id]]=$element[name];
+endforeach; 
+
+
+foreach ($typeStudy as &$element): 
+$itemsStudy[$element[id]]=$element[stydytype];
+endforeach; 
+
+
+$model=  new Studytype;
+//$dd= Studytype::find()->all();
+//var_dump($dd);
+//die();
+
+echo 'Отделение '.Html::DropDownList('stydytype',null,$itemsStudy).' группа '. Html::DropDownList('groups',null,$itemsGr);
+
+
+
+
+
+
+
+?>
+<br>
+<br>
 <div class="row">
 	<div class="col-md-6">
 <table border="1"  style="width:500px">

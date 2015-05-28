@@ -10,6 +10,7 @@ use app\models\Posts;
 use yii\web\UploadedFile;
 use app\models\UploadForm;
 use app\models\Raspisanie;
+use app\models\TypePost;
 use app\controllers\DateTime;
 use yii\helpers;
 
@@ -93,25 +94,7 @@ class SiteController extends Controller
     }
 	
 /////////////////////////////////////////////
-public function actionAdd()
-    { 
-        $model = new Posts();
-       $this->layout='//adminka';
-       
-        if ($model->load(Yii::$app->request->post())) 
-        {
-        $form = Yii::$app->request->post('Posts');
-       
-        $model->saved($form['text']);
-        }
-               $query = Posts::find();
-              
-              
-               $listpost = $query->orderBy('dateadd')->all();
-              
-               return  $this->render('add',['model'=>$model,'listpost' => $listpost]);
-         
-    }
+
 //////////////////////////////////////////
 ////////////// Показ расписания
 public function actionShedule() 
@@ -129,6 +112,47 @@ public function actionShowlibrary()
 return $this->render('showlibrary', ['model' => $model,'data'=>$data]);
 }
 ////////////////////////////////////////////////////////////////
+
+/// показ материалов сайта 
+public function actionShowpost() 
+{
+    //echo "555";
+    $this->layout='//mainS';
+    $id = Yii::$app->request->get('id');
+                          
+                           if ($id>0)  
+                           {
+                           //echo "444";
+                           $model= new Posts;
+                           $podrazdel=Posts::find()->where(['id'=>$id])->asArray()->all();
+                          // var_dump($podrazdel);
+                          // die();
+                           return $this->render('showpost', ['model' => $model,'podrazdel'=>$podrazdel]); 
+                           } 
+
+
+}
+// показ всех статей для раздела
+public function actionShowallpostfromrazdel() 
+{
+    
+    $this->layout='//mainS';
+    $id = Yii::$app->request->get('id');
+                          
+                           if ($id>0)  
+                           {
+                          
+                           $model= new TypePost;
+                           $arts=Posts::find()->where(['type_post'=>$id])->asArray()->all();
+                         
+                           return $this->render('showallpostfromrazdel', ['model' => $model,'arts'=>$arts,"id"=>$id]); 
+                           } 
+
+
+}
+
+
+
 /// Части посвященные Админки
  public function actionUpload()
     {
